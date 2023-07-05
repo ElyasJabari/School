@@ -1,24 +1,34 @@
-// Berechnungsfunktion für den Fahrpreis basierend auf der Nutzungsstrecke
-function calculatePriceByDistance(distance) {
-    // Beispielhafte Preisberechnung: 0,20 Euro pro Kilometer
-    const unlock = 1.20;
-    const pricePerKilometer = 0.20;
-    const totalPrice = unlock + (distance * pricePerKilometer);
-    return totalPrice.toFixed(2); // Auf zwei Dezimalstellen runden
+// Definiere eine Klasse namens "Fahrpreisrechner"
+class Fahrpreisrechner {
+    constructor(unlock, pricePerUnit) {
+        this.unlock = unlock;
+        this.pricePerUnit = pricePerUnit;
+    }
+
+    calculatePriceByDistance(distance) {
+        const totalPrice = this.unlock + distance * this.pricePerUnit;
+        return totalPrice.toFixed(2);
+    }
 }
 
-// Event-Listener für die Schaltfläche "Preis berechnen."
-document.getElementById('calculate-btn').addEventListener('click', function() {
+// Erstelle eine Instanz der Klasse "Fahrpreisrechner"
+const fahrpreisrechner = new Fahrpreisrechner(1.20, 0.20);
+
+function calculateTotalPrice() {
     const distanceInput = document.getElementById('usage-distance');
     const distance = parseFloat(distanceInput.value);
-
     let totalPrice = '';
 
     if (!isNaN(distance)) {
-        totalPrice += calculatePriceByDistance(distance) + ' Euro (nach Nutzungsstrecke)';
+        totalPrice = fahrpreisrechner.calculatePriceByDistance(distance) + ' Euro (nach Nutzungsstrecke)';
     } else {
         totalPrice = 'Ungültige Eingabe';
     }
+
     document.getElementById('result').innerHTML = totalPrice;
-    distanceInput.value = "";
-});
+    distanceInput.value = '';
+}
+
+// Event-Listener für die Schaltfläche "Preis berechnen."
+document.getElementById('calculate-btn').addEventListener('click', calculateTotalPrice);
+

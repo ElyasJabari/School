@@ -1,23 +1,32 @@
-// Berechnungsfunktion für den Fahrpreis basierend auf der Nutzungsdauer
-function calculatePriceByDuration(duration) {
-    // Beispielhafte Preisberechnung: 0,10 Euro pro Minute
-    const unlock = 1.20;
-    const pricePerMinute = 0.10;
-    const totalPrice = unlock + (duration * pricePerMinute);
-    return totalPrice.toFixed(2); // Auf zwei Dezimalstellen runden
+class Fahrpreisrechner {
+    constructor(unlock, pricePerMinute) {
+        this.unlock = unlock;
+        this.pricePerMinute = pricePerMinute;
+    }
+
+    calculatePriceByDuration(duration) {
+        const totalPrice = this.unlock + duration * this.pricePerMinute;
+        return totalPrice.toFixed(2);
+    }
 }
 
-// Event-Listener für die Schaltfläche "Preis berechnen."
-document.getElementById('calculate-btn').addEventListener('click', function() {
+// Erstelle eine Instanz der Klasse "Fahrpreisrechner"
+const fahrpreisrechner = new Fahrpreisrechner(1.20, 0.10);
+
+function calculateTotalPrice() {
     const durationInput = document.getElementById('usage-duration');
     const duration = parseFloat(durationInput.value);
     let totalPrice = '';
 
     if (!isNaN(duration)) {
-        totalPrice = calculatePriceByDuration(duration) + ' Euro (nach Nutzungsdauer)';
+        totalPrice = fahrpreisrechner.calculatePriceByDuration(duration) + ' Euro (nach Nutzungsdauer)';
     } else {
         totalPrice = 'Ungültige Eingabe';
     }
+
     document.getElementById('result').innerHTML = totalPrice;
-    durationInput.value = "";
-});
+    durationInput.value = '';
+}
+
+document.getElementById('calculate-btn').addEventListener('click', calculateTotalPrice);
+
